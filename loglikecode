@@ -1,0 +1,14 @@
+import torch
+from torch.distributions.bernoulli import Bernoulli
+from torch.distributions.normal import Normal
+mu = torch.tensor(5., requires_grad = True)
+sigma = torch.tensor(2., requires_grad = True)
+alpha = torch.tensor(0.5, requires_grad = True)
+gamma = Bernoulli(alpha).sample()
+eps = Normal(0,1).sample()
+beta = gamma * (mu + sigma*eps) ## Calculate beta
+beta.backward() ##Calculate all the gradients
+print('gamma is {}, eps is {:.4f}'.format(gamma, eps))
+print('The gradient for mu is {}'.format(mu.grad.item()))
+print('The gradient for sigma is {:.4f}'.format(sigma.grad.item()))
+print('The gradient for alpha is {}'.format(alpha.grad))
